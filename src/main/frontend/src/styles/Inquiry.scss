@@ -1,0 +1,21 @@
+.inquiry_container{
+  padding-left: 100px;
+  padding-right: 100px;
+  margin-top: 30px;
+  margin-bottom: 100px;
+  width: 50%;
+  .inquiry_text {
+    text-align: center;
+  }
+
+  .inquiry_btn {
+    float: right;
+  }
+}
+
+@media (max-width: 991px) {
+  .inquiry_container {
+    padding: 10px;
+    width: 90%;
+  }
+}

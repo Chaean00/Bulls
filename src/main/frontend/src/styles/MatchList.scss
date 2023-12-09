@@ -1,0 +1,20 @@
+.list_container {
+  margin-top: 50px;
+  .list_link {
+    text-decoration: none;
+    .list_matchTime{
+      padding-top: 7px;
+      padding-right: 10px;
+      font-weight: bold;
+    }
+    .list_subText{
+      color: gray;
+    }
+  }
+}
+
+@media (max-width: 991px) {
+  .list_container {
+    margin-top: 30px;
+  }
+}
