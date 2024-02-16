@@ -84,6 +84,7 @@ export const User = () => {
                         <Card.Body>
                             <Card.Link onClick={openModal} style={{cursor: "pointer"}}>소개 수정</Card.Link>
                         </Card.Body>
+                        {/*소개 수정 모달*/}
                         <Modal show={modal} onHide={closeModal} centered>
                             <Modal.Header closeButton>
                                 <Modal.Title>본인 소개 수정</Modal.Title>
