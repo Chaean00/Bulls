@@ -62,7 +62,7 @@ export const User = () => {
             ShowAlert("권한이 없습니다", "로그인 후 이용해주세요", "error", "/", navigate)
         }
         GetUser(navigate, setUser, setTeam, setLoading, newIntroduce, setNewIntroduce);
-    }, [])
+    }, [loggedIn, navigate, newIntroduce])
 
     return loggedIn ? (loading ?
         <Container className="d-flex flex-column align-items-center" id="card_container">

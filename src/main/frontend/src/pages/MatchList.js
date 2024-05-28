@@ -22,7 +22,7 @@ export const MatchList = () => {
         } else {
             GetMatchList(navigate, setMatchList, setLoading);
         }
-    }, [loggedIn])
+    }, [loggedIn, navigate])
 
 
 

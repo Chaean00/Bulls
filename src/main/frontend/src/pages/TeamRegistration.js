@@ -23,7 +23,7 @@ export const TeamRegistration = () => {
             ShowAlert("권한이 없습니다", "로그인 후 이용해주세요", "error", "/", navigate)
             RemoveData();
         }
-    }, [loggedIn])
+    }, [loggedIn, navigate])
 
     const handleChange = (e) => {
         setTeam({

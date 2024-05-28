@@ -80,7 +80,7 @@ export const MatchRegistration = () => {
                 RemoveData();
                 ShowAlert("권한이 없습니다", "로그인 후 이용해주세요", "error", "/", navigate)
             }
-        }, [])
+        }, [navigate, loggedIn])
 
         return loggedIn ? (
             <Container className="inquiry_container">

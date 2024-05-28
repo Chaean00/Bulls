@@ -4,7 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-application.yml
+#application.yml
 
 ### STS ###
 .apt_generated
@@ -38,16 +38,16 @@ out/
 .vscode/
 
 # 리액트 .gitignore 내용 추가
-/src/main/frontend/node_modules
-/src/main/frontend/.pnp
-/src/main/frontend/.pnp.js
-/src/main/frontend/coverage
-/src/main/frontend/build
-/src/main/frontend/.DS_Store
-/src/main/frontend/.env.local
-/src/main/frontend/.env.development.local
-/src/main/frontend/.env.test.local
-/src/main/frontend/.env.production.local
-/src/main/frontend/npm-debug.log*
-/src/main/frontend/yarn-debug.log*
-/src/main/frontend/yarn-error.log*
+#/src/main/frontend/node_modules
+#/src/main/frontend/.pnp
+#/src/main/frontend/.pnp.js
+#/src/main/frontend/coverage
+#/src/main/frontend/build
+#/src/main/frontend/.DS_Store
+#/src/main/frontend/.env.local
+#/src/main/frontend/.env.development.local
+#/src/main/frontend/.env.test.local
+#/src/main/frontend/.env.production.local
+#/src/main/frontend/npm-debug.log*
+#/src/main/frontend/yarn-debug.log*
+#/src/main/frontend/yarn-error.log*

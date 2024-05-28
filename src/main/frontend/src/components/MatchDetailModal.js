@@ -64,7 +64,7 @@ export const MatchDetailModal = () => {
         }
         // 글 세부사항 조회 함수
         DetailBoard(id,navigate,setBoard,setLoading,setBoardWriter,setIsFinished);
-    },[])
+    },[id, loggedIn, navigate])
 
     return loading ?
         (

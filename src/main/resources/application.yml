@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/bulls?serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        # 만들어진 sql 보여주기
+        show_sql: true
+        # sql 가독성 좋게 보여줌
+        format_sql: true
+
+jwt:
+  secret_key: asmdflkmsladkfmkldsamflkm1lk2m3kl1m2k3lm12lk4m5512735897219853sdsadsadasdsa
+  expiration: 1800000
+  refreshExpiration: 18000000 #  일단 예시
+  issuer: JT_Carpooler
