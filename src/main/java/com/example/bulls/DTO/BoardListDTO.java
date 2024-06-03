@@ -10,7 +10,7 @@ import java.time.LocalTime;
 public class BoardListDTO {
 
 
-    private Integer id; // 고유 아이디
+    private Long id; // 고유 아이디
     private LocalTime matchTime; // 경기 시간
     private LocalDate matchDate; // 경기 날짜
     private String place; // 지역

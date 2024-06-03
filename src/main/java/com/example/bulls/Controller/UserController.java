@@ -8,6 +8,7 @@ import com.example.bulls.Service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 @Slf4j
 public class UserController {
-    private UserService userService;
-    private UserRepository userRepository;
+    private final UserService userService;
+    private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtProvider jwtProvider;
 
@@ -44,11 +45,14 @@ public class UserController {
 
     // 로그인
     @PostMapping("/user/signin")
-    public ResponseEntity<TokenDTO> signin(@Valid @RequestBody SigninDTO signinDTO) {
+    public ResponseEntity<String> signin(@Valid @RequestBody SigninDTO signinDTO) {
         TokenDTO tokenDTO = userService.signin(signinDTO.getUid(), signinDTO.getPassword());
         if (tokenDTO != null) {
+            // JWT Access 토큰을 헤더에 담아서 반환
+            HttpHeaders headers = new HttpHeaders();
+            headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + tokenDTO.getAccess());
             log.info("로그인 성공! - Controller");
-            return ResponseEntity.ok(tokenDTO);
+            return ResponseEntity.ok().headers(headers).body(tokenDTO.getNickname());
         }
         // 로그인 실패
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 상태코드: 400

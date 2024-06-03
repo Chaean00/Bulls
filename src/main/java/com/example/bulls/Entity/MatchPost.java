@@ -1,12 +1,11 @@
 package com.example.bulls.Entity;
 
 
-import com.example.bulls.DTO.MatchDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.http.ResponseEntity;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -20,7 +19,7 @@ public class MatchPost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "match_time")
     private LocalTime matchTime;

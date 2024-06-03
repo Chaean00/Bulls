@@ -69,15 +69,13 @@ public class UserService {
         String pas = optionalUser.get().getPassword();
 
         // ToeknDTO용
-        String name = optionalUser.get().getName();
         String nickname = optionalUser.get().getNickname();
-        String email = optionalUser.get().getEmail();
 
         // 인증 객체 생성
         UserDetails userDetails = new com.example.bulls.Config.CustomUserDetails(uId, pas, Arrays.asList(new SimpleGrantedAuthority(optionalUser.get().getRoles())));
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
 
-        // jwt 발급
+        // jwt access 발급
         String accessToken = jwtProvider.createToken(authentication);
 
         return TokenDTO.builder()

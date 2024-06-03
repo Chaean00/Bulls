@@ -138,19 +138,28 @@ export const SignIn = async (navigate, signinData, setSigninData, handleCloseMod
             },
         })
         if (response.status === 200) {
+
             const data = await response.data;
+            const token = response.headers.get("Authorization").split(' ')[1];
+
+            console.log(token);
             // JWT 토큰 암호화
-            const encryption = CryptoJs.AES.encrypt(data.access, process.env.REACT_APP_SECRET_KEY);
+
+            const encryption = CryptoJs.AES.encrypt(token, process.env.REACT_APP_SECRET_KEY);
+
             localStorage.setItem("token", encryption);
             localStorage.setItem("loggedIn", true);
-            localStorage.setItem("nickname", response.data.nickname);
-            // localStorage.setItem("nickname", )
+            localStorage.setItem("nickname", data);
+            // id, pw 입력 칸 초기화
             setSigninData({
                 uid: "",
                 password: "",
             });
+            // 로그인 모달창 닫기
             handleCloseModal();
+            // 알림창 닫기
             setShowAlert(false);
+            // 알림창이 꺼지면 "/"(웰컴페이지)로 이동
             Swal.fire({
                 title: "로그인이 완료되었습니다.",
                 text: "환영 합니다.",
@@ -164,8 +173,6 @@ export const SignIn = async (navigate, signinData, setSigninData, handleCloseMod
                 }
             })
             navigate('/')
-        } else {
-            console.log("로그인 실패")
         }
     } catch (error) {
         if (error.response?.status === 400) {

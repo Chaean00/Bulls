@@ -2,7 +2,6 @@ package com.example.bulls.DTO;
 
 
 import com.example.bulls.Entity.MatchPost;
-import jakarta.persistence.Column;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -17,7 +16,7 @@ import java.time.LocalTime;
 @Data
 public class MatchDTO {
 
-    private Integer id = null;
+    private Long id = null;
     private LocalTime matchTime;
     private LocalDate matchDate;
     private LocalTime postTime;
