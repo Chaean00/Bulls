@@ -6,7 +6,7 @@ import {Button, Container, Form} from "react-bootstrap";
 import "../styles/MatchRegistration.scss"
 import Swal from "sweetalert2";
 import {RemoveData} from "../components/RemoveData";
-import {MatchCreate} from "../api/Api";
+import {MatchCreate} from "../api/MatchApi";
 
 export const MatchRegistration = () => {
     const navigate = useNavigate();
@@ -115,7 +115,7 @@ export const MatchRegistration = () => {
                     <Form.Group className="mb-3" controlId="ControlTextarea1">
                         <Form.Label>구장 가격</Form.Label>
                         <Form.Control type="number" placeholder="구장 가격" name="matchPrice" value={inputs.matchPrice}
-                                      onChange={handleChange}/>
+                                      onChange={handleChange} step={1000}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="ControlTextarea1">
                         <Form.Label>Level</Form.Label>
@@ -144,10 +144,10 @@ export const MatchRegistration = () => {
                             <option value="11vs11">11vs11</option>
                             <option value="10vs10">10vs10</option>
                             <option value="9vs9">9vs9</option>
-                            <option value="11vs11">8vs8</option>
-                            <option value="10vs10">7vs7</option>
-                            <option value="9vs9">6vs6</option>
-                            <option value="9vs9">5vs5</option>
+                            <option value="8vs8">8vs8</option>
+                            <option value="7vs7">7vs7</option>
+                            <option value="6vs6">6vs6</option>
+                            <option value="5vs5">5vs5</option>
                         </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="ControlInput1">

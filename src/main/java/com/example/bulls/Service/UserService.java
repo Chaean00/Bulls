@@ -1,9 +1,7 @@
 package com.example.bulls.Service;
 
 import com.example.bulls.DTO.TokenDTO;
-import com.example.bulls.DTO.IntroduceDTO;
 import com.example.bulls.DTO.UserDTO;
-import com.example.bulls.DTO.UserInfoDTO;
 import com.example.bulls.Entity.User;
 import com.example.bulls.Exception.SigninException;
 import com.example.bulls.JWT.JwtProvider;
@@ -25,9 +23,9 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class UserService {
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private JwtProvider jwtProvider;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtProvider jwtProvider;
 
     @Autowired
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JwtProvider jwtProvider) {
@@ -85,19 +83,21 @@ public class UserService {
     }
 
     // 로그인한 유저 정보 반환
-    public UserInfoDTO userInfo() {
+    public UserDTO getUser() {
         try {
             CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String uid = userDetails.getUsername();
             User user = userRepository.findByUid(uid).get();
 
-            return UserInfoDTO.builder()
+            return UserDTO.builder()
                     .uid(user.getUid())
+                    .password(user.getPassword())
+                    .email(user.getEmail())
                     .name(user.getName())
                     .nickname(user.getNickname())
                     .introduce(user.getIntroduce())
-                    .email(user.getEmail())
                     .build();
+
         } catch (SecurityException e) {
             log.info(e.getMessage());
             return null;
@@ -106,11 +106,11 @@ public class UserService {
     }
 
     // 유저 소개 업데이트
-    public String updateIntroduce(IntroduceDTO introduceDTO) {
-        Optional<User> optionalUser = userRepository.findByUid(introduceDTO.getUid());
+    public String updateIntroduce(UserDTO userDTO) {
+        Optional<User> optionalUser = userRepository.findByUid(userDTO.getUid());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            user.setIntroduce(introduceDTO.getIntroduce());
+            user.setIntroduce(userDTO.getIntroduce());
             userRepository.save(user);
             return user.getIntroduce();
         } else {

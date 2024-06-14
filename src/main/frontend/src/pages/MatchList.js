@@ -5,7 +5,7 @@ import {LoadingSpinner} from "../components/LoadingSpinner";
 import {Badge, Container, FormCheck, ListGroup} from "react-bootstrap";
 import "../styles/MatchList.scss"
 import {RemoveData} from "../components/RemoveData";
-import {GetMatchList} from "../api/Api";
+import {GetMatchList} from "../api/MatchApi";
 
 export const MatchList = () => {
     const loggedIn = localStorage.getItem("loggedIn") === "true";

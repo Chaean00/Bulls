@@ -4,7 +4,7 @@ import "../styles/TeamRegistration.scss"
 import {useNavigate} from "react-router-dom";
 import {ShowAlert} from "../components/ShowAlert";
 import {LoadingSpinner} from "../components/LoadingSpinner";
-import {TeamCreate} from "../api/Api";
+import {TeamCreate} from "../api/TeamApi";
 import {RemoveData} from "../components/RemoveData";
 
 export const TeamRegistration = () => {

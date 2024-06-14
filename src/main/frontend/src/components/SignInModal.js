@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Modal, Form, Col, Button, Alert} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
-import {SignIn} from "../api/Api";
+import {SignIn} from "../api/UserApi";
 
 export const SignInModal = ({ showModal, handleCloseModal }) => {
 

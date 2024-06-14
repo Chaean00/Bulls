@@ -30,7 +30,7 @@ public class SpringConfig implements WebMvcConfigurer {
                 .csrf(AbstractHttpConfigurer::disable)
                 // ID, Password 문자열을 Base64로 인코딩하여 전달하는 구조
                 .httpBasic(AbstractHttpConfigurer::disable)
-                // JWT방식은 세션이 필요없으므로 STATELESS 설정
+                // STATELESS 설정
                 .sessionManagement((sessionManagement) -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 인증, 인가 설정

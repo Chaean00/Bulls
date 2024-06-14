@@ -7,36 +7,35 @@ import {useNavigate} from "react-router-dom";
 import {ShowAlert} from "../components/ShowAlert";
 import Swal from "sweetalert2";
 import {LoadingSpinner} from "../components/LoadingSpinner";
-import {DeleteTeam, GetUser, UpdateIntroduce} from "../api/Api";
+import {GetUser, UpdateIntroduce} from "../api/UserApi";
+import {DeleteTeam} from "../api/TeamApi"
 
 export const User = () => {
+
     const navigate = useNavigate();
     const loggedIn = localStorage.getItem("loggedIn") === "true";
     const [user, setUser] = useState({});
     const [team, setTeam] = useState({});
     const [modal, setModal] = useState(false);
-    const [newIntroduce, setNewIntroduce] = useState({
-        uid: "",
-        introduce: ""
-    });
     const [loading, setLoading] = useState(false);
+
 
     const openModal = () => setModal(true);
     const closeModal = () => setModal(false);
     const handleIntroduceChange = (e) => {
-        setNewIntroduce({
-            ...newIntroduce,
+        console.log(user)
+        setUser({
+            ...user,
             [e.target.name]: e.target.value
-        });
+        })
     }
+
     // 유저 소개 업데이트
     const handleUpdate = async () => {
-        setNewIntroduce({
-            ...newIntroduce,
-            uid: user.uid
-        })
-        await UpdateIntroduce(newIntroduce);
+        await UpdateIntroduce(user, navigate);
     }
+
+    // 팀 삭제
     const handleDeleteTeam = async () => {
         Swal.fire({
             title: "정말로 팀을 탈퇴하시겠습니까?",
@@ -48,7 +47,7 @@ export const User = () => {
             cancelButtonText: "취소"
         }).then(async (result) => {
             if (result.isConfirmed) {
-                await DeleteTeam();
+                await DeleteTeam(navigate);
             } else if (result.isDismissed) {
                 navigate("/user/info");
             } else if (result.dismiss === Swal.DismissReason.backdrop || result.dismiss === Swal.DismissReason.esc) {
@@ -57,12 +56,13 @@ export const User = () => {
         })
 
     }
+
     useEffect(() => {
         if (!loggedIn) {
             ShowAlert("권한이 없습니다", "로그인 후 이용해주세요", "error", "/", navigate)
         }
-        GetUser(navigate, setUser, setTeam, setLoading, newIntroduce, setNewIntroduce);
-    }, [loggedIn, navigate, newIntroduce])
+        GetUser(navigate, setUser, setTeam, setLoading);
+    }, [loggedIn, navigate])
 
     return loggedIn ? (loading ?
         <Container className="d-flex flex-column align-items-center" id="card_container">
@@ -101,7 +101,7 @@ export const User = () => {
                                                 rows={5}
                                                 placeholder="새로운 소개를 입력해주세요"
                                                 name="introduce"
-                                                value={newIntroduce.introduce}
+                                                value={user.introduce}
                                                 onChange={handleIntroduceChange}
                                                 className="input_box"
                                             />

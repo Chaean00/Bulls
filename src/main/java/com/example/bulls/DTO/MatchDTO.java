@@ -32,8 +32,6 @@ public class MatchDTO {
     private String mainText;
     private String nickname;
 
-
-
     @Override
     public String toString() {
         return "MatchDTO{" +

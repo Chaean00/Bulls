@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 @Slf4j
 public class InquiryController {
-    private InquiryService inquiryService;
+    private final InquiryService inquiryService;
 
     @Autowired
     public InquiryController(InquiryService inquiryService) {

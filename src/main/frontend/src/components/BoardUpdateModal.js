@@ -2,7 +2,7 @@ import {Button,Form, Modal} from "react-bootstrap";
 import {useState} from "react";
 import Swal from "sweetalert2";
 import {useNavigate} from "react-router-dom";
-import {UpdateBoard} from "../api/Api";
+import {UpdateBoard} from "../api/MatchApi";
 
 export const BoardUpdateModal = ({ showModal, handleCloseModal, board }) => {
 

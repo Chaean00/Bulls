@@ -29,7 +29,7 @@ function App() {
                       path="/match/registration"
                       element={<MatchRegistration />}
                   ></Route>
-                  <Route path="/match/list" element={<MatchList/>}></Route>
+                  <Route path="/match/boardlist" element={<MatchList/>}></Route>
                   <Route path="/user/info" element={<User />}></Route>
                   <Route path="/match/detail/:id" element={<MatchDetailModal/>}></Route>
               </Routes>

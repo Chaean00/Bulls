@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class InquiryService {
-    private InquiryRepository inquiryRepository;
+    private final InquiryRepository inquiryRepository;
 
     @Autowired
     public InquiryService(InquiryRepository inquiryRepository) {
@@ -26,6 +26,7 @@ public class InquiryService {
         inquiry.setPhone(inquiryDTO.getPhone());
         inquiry.setEmail(inquiryDTO.getEmail());
         inquiry.setBody(inquiryDTO.getBody());
+        inquiry.setStatus("대기중");
 
         inquiryRepository.save(inquiry);
 

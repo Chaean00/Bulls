@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class TeamInfoDTO {
+public class TeamDTO {
     private String teamName;
     private String teamIntroduce;
     private String teamArea;

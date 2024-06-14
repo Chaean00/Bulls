@@ -26,9 +26,9 @@ import java.util.Optional;
 @Slf4j
 public class TeamService {
 
-    private TeamRepository teamRepository;
-    private UserRepository userRepository;
-    private MatchPostRepository matchPostRepository;
+    private final TeamRepository teamRepository;
+    private final UserRepository userRepository;
+    private final MatchPostRepository matchPostRepository;
 
     @Autowired
     public TeamService(TeamRepository teamRepository, UserRepository userRepository, MatchPostRepository matchPostRepository) {
@@ -39,7 +39,7 @@ public class TeamService {
 
     // 팀 등록
     @Transactional
-    public boolean teamRegister(TeamRegisterDTO teamRegisterDTO) {
+    public boolean teamRegister(TeamDTO teamRegisterDTO) {
         // 인증되어있는 객체에서 userName가져오기
         CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String uid = userDetails.getUsername();
@@ -61,13 +61,11 @@ public class TeamService {
 
         team.addUser(user);
 
-        log.info("저장 완료?");
-
         return true;
     }
 
     // 본인이 속한 팀 정보 반환
-    public TeamInfoDTO teamInfo() {
+    public TeamDTO teamInfo() {
         try {
             // 인증되어있는 객체에서 userName가져오기
             CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -79,7 +77,7 @@ public class TeamService {
             Optional<Team> team = teamRepository.findByNickname(optionalUser.get().getNickname());
 
             if (team.isPresent()) {
-                return TeamInfoDTO.builder()
+                return TeamDTO.builder()
                         .teamName(team.get().getTeamName())
                         .teamArea(team.get().getTeamArea())
                         .teamIntroduce(team.get().getTeamIntroduce())
@@ -104,6 +102,8 @@ public class TeamService {
             String uid = userDetails.getUsername();
             Optional<User> optionalUser = userRepository.findByUid(uid);
 
+            userRepository.save(optionalUser.get());
+
             Optional<Team> team = teamRepository.findByNickname(optionalUser.get().getNickname());
             teamRepository.delete(team.get());
 
@@ -114,56 +114,36 @@ public class TeamService {
         }
     }
 
-    // 팀 리스트 조회
-    public List teamList() {
-        List<Team> teams = teamRepository.findAll();
-        if (teams.isEmpty()) {
-            return null;
-        }
-        List<TeamListDTO> teamListDTO = new ArrayList<>();
-        for(Team team : teams) {
-            teamListDTO.add(TeamListDTO.builder()
-                            .teamName(team.getTeamName())
-                            .teamArea(team.getTeamArea())
-                            .teamCaptain(team.getTeamCaptain())
-                            .teamIntroduce(team.getTeamIntroduce())
-                            .teamPhone(team.getTeamPhone())
-                    .build());
-        }
-        return teamListDTO;
-    }
-
     // 모든 게시판 조회
-    public List<BoardListDTO> getAllBoard() {
+    public List<MatchDTO> getAllBoard() {
         // 모든 데이터 매칭날짜 기준으로 오름차순 정렬
         List<MatchPost> matchPosts = matchPostRepository.findAll(Sort.by(Sort.Direction.ASC, "matchDate"));
 
-        List<BoardListDTO> dtos = new ArrayList<>();
+        List<MatchDTO> dtos = new ArrayList<>();
         for (MatchPost matchPost : matchPosts) {
             // 변환 및 리스트에 추가하는 로직...
-            BoardListDTO boardListDTO = new BoardListDTO();
+            MatchDTO matchDTO = new MatchDTO();
 
-            boardListDTO.setId(matchPost.getId());
-            boardListDTO.setMatchDate(matchPost.getMatchDate());
-            boardListDTO.setMatchTime(matchPost.getMatchTime());
-            boardListDTO.setPlace(matchPost.getPlace());
-            boardListDTO.setMatchPlace(matchPost.getMatchPlace());
-            boardListDTO.setNumPerson(matchPost.getNumPerson());
-            boardListDTO.setMatchStatus(matchPost.getMatchStatus());
-            boardListDTO.setLevel(matchPost.getLevel());
-            boardListDTO.setCanParking(matchPost.getCanParking());
-            boardListDTO.setMatchPrice(matchPost.getMatchPrice());
-            boardListDTO.setNickname(matchPost.getNickname());
+            matchDTO.setId(matchPost.getId());
+            matchDTO.setMatchDate(matchPost.getMatchDate());
+            matchDTO.setMatchTime(matchPost.getMatchTime());
+            matchDTO.setPlace(matchPost.getPlace());
+            matchDTO.setMatchPlace(matchPost.getMatchPlace());
+            matchDTO.setNumPerson(matchPost.getNumPerson());
+            matchDTO.setMatchStatus(matchPost.getMatchStatus());
+            matchDTO.setLevel(matchPost.getLevel());
+            matchDTO.setCanParking(matchPost.getCanParking());
+            matchDTO.setMatchPrice(matchPost.getMatchPrice());
+            matchDTO.setNickname(matchPost.getNickname());
 
-            dtos.add(boardListDTO);
+            dtos.add(matchDTO);
         }
         return dtos;
     }
 
     // 게시판 세부 조회
     public Optional<MatchPost> getBoardDetail(Integer id) {
-        Optional<MatchPost> match = matchPostRepository.findById(id);
-        return match;
+        return matchPostRepository.findById(id);
     }
 
     // 게시판 업데이트
@@ -206,7 +186,6 @@ public class TeamService {
 
         matchDTO.setNickname(optionalUser.get().getNickname());
         MatchPost matchPost = matchDTO.toEntity();
-        log.info("MatchDTO = " + matchDTO.toString());
 
         matchPostRepository.save(matchPost);
         return true;
@@ -224,16 +203,16 @@ public class TeamService {
         MatchPost matchPost = matchPostRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("존재하지않는 게시물입니다." + id));
 
-        if (matchPost.getMatchStatus().equals("매칭중")) {
-            log.info("매칭 마감으로 변경");
-            matchPost.setMatchStatus("매칭 마감");
-        } else if (matchPost.getMatchStatus().equals("매칭 마감")) {
-            log.info("매칭중으로 변경");
-            matchPost.setMatchStatus("매칭중");
-        }
-        matchPostRepository.save(matchPost);
-        return true;
+        String str = matchPost.getMatchStatus().equals("매칭중") ? "매칭 마감" : "매칭중";
 
+        try {
+            matchPost.setMatchStatus(str);
+            matchPostRepository.save(matchPost);
+            return true;
+        } catch (Exception e) {
+            log.info(String.valueOf(e));
+            return false;
+        }
     }
 
     // 중복회원 검증

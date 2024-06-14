@@ -29,11 +29,11 @@ public class JwtFilter extends OncePerRequestFilter { // OncePerRequestFilter : 
             Authentication authentication = jwtProvider.getAuthentication(AccessToken);
             // 권한부여
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("권한 부여 성공");
+
         } else if (AccessToken != null && "EXPIRED".equals(jwtProvider.validateToken(AccessToken))) { // access token 만료
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 Error
             response.getWriter().write("Access Token이 만료되었습니다.");
-            log.info("Access Token이 만료되었습니다.");
+
             return;
         }
         filterChain.doFilter(request, response);

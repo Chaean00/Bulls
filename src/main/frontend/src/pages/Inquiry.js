@@ -2,7 +2,7 @@ import {Container, Form,  Button} from "react-bootstrap";
 import {useState} from "react";
 import "../styles/Inquiry.scss"
 import {useNavigate} from "react-router-dom";
-import {InquiryCreate} from "../api/Api";
+import {InquiryCreate} from "../api/InquiryApi";
 
 export const Inquiry = () => {
     const navigate = useNavigate();

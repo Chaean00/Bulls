@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {Modal, Button, Form, Col, Alert} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
-import {Signup} from "../api/Api";
+import {Signup} from "../api/UserApi";
 
 const SignUpModal = ({ showModal, handleCloseModal }) => {
     const [validated, setValidated] = useState(false);

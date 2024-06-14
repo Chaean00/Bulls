@@ -58,7 +58,7 @@ export const Header = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         {isMobile() ? (<Nav>
                             <Nav.Link onClick={() => {
-                                navigate("/match/list");
+                                navigate("/match/boardlist");
                                 setExpanded(false);
                             }}>
                                 매칭 리스트
@@ -79,7 +79,7 @@ export const Header = () => {
                             <Nav className="me-auto">
                                 <NavDropdown title={<img src={Menu} alt="Menu Icon" className="menu_icon"/>} id="basic-nav-dropdown">
                                     <NavDropdown.Item onClick={() => {
-                                        navigate('/match/list');
+                                        navigate('/match/boardlist');
                                         setExpanded(false);
                                     }}>
                                         매칭 리스트

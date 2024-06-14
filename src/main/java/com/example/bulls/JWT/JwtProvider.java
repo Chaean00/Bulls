@@ -24,6 +24,9 @@ public class JwtProvider {
     private String secretKey;
     @Value("${jwt.expiration}")
     private long expiration;
+    @Value("${jwt.issuer}")
+    private String issuer;
+
     private final UserDetailsService userDetailsService;
 
     @PostConstruct
@@ -43,6 +46,7 @@ public class JwtProvider {
                 .setIssuedAt(new Date(System.currentTimeMillis())) // 토큰 발행 시간 정보
                 .setExpiration(new Date(System.currentTimeMillis() + expiration)) // 유효시간 저장 -> ms단위
                 .signWith(SignatureAlgorithm.HS256, secretKey) // 사용할 암호화 알고리즘
+                .setIssuer(issuer)
                 .compact();
     }
 

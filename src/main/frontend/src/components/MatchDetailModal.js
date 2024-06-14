@@ -17,7 +17,7 @@ import Nickname from "../images/detail/nickname.png"
 import {RemoveData} from "./RemoveData";
 import {BoardUpdateModal} from "./BoardUpdateModal";
 import Swal from "sweetalert2";
-import {DeleteBoard, DetailBoard, MatchingFinished} from "../api/Api";
+import {DeleteBoard, DetailBoard, MatchingFinished} from "../api/MatchApi";
 
 export const MatchDetailModal = () => {
     const loggedIn = localStorage.getItem("loggedIn") === "true";

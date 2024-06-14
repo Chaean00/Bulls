@@ -9,12 +9,13 @@ spring:
     properties:
       hibernate:
         # 만들어진 sql 보여주기
-        show_sql: true
+#        show_sql: true
         # sql 가독성 좋게 보여줌
         format_sql: true
 
 jwt:
-  secret_key: asmdflkmsladkfmkldsamflkm1lk2m3kl1m2k3lm12lk4m5512735897219853sdsadsadasdsa
+  secret_key: 015a0705cca373d659869c9f707c5c583fd313c01171c9633999edb9169361c4d7fcf7bb23dced5669b0f4aaee8f3e96a5d15d81a547d6dfd23a6dad8594ff56
+  # 밀리초 단위 1800000 = 30분
   expiration: 1800000
-  refreshExpiration: 18000000 #  일단 예시
-  issuer: JT_Carpooler
+#  refreshExpiration: 18000000 #  일단 예시
+  issuer: Bulls
