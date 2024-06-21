@@ -62,4 +62,7 @@ public class MatchPost {
 
     @Column(name = "nickname")
     private String nickname;
+
+    @ManyToOne
+    private User user;
 }

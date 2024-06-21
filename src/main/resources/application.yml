@@ -15,7 +15,9 @@ spring:
 
 jwt:
   secret_key: 015a0705cca373d659869c9f707c5c583fd313c01171c9633999edb9169361c4d7fcf7bb23dced5669b0f4aaee8f3e96a5d15d81a547d6dfd23a6dad8594ff56
+  # AccessToken 만료시간
   # 밀리초 단위 1800000 = 30분
-  expiration: 1800000
-#  refreshExpiration: 18000000 #  일단 예시
+  expiration_access: 3600000
+  # refreshToken 만료시간
+  expiration_refresh: 86400000
   issuer: Bulls

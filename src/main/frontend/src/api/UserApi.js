@@ -28,8 +28,8 @@ export const SignIn = async (navigate, signinData, setSigninData, handleCloseMod
             const token = response.headers.get("Authorization").split(' ')[1];
 
             console.log(token);
-            // JWT 토큰 암호화
 
+            // JWT 토큰 암호화
             const encryption = CryptoJs.AES.encrypt(token, process.env.REACT_APP_SECRET_KEY);
 
             localStorage.setItem("token", encryption);

@@ -43,7 +43,7 @@ public class SpringConfig implements WebMvcConfigurer {
                 )
                 // 필터 추가 (JWT 검증)
                 .addFilterBefore(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
-                // 로그인 페이지 비활성화
+                // 로그인 폼 비활성화 (세션 방식의 로그인 폼)
                 .formLogin(login -> login
                         .disable()
                 )

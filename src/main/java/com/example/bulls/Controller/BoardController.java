@@ -24,16 +24,29 @@ public class BoardController {
 
     @GetMapping("/match/boardlist")
     @ResponseBody
-    public List<MatchDTO> getAllBoards() { // BoardList DTO 에서 값 추출 하기
-        return teamService.getAllBoard();
+    public ResponseEntity<List<MatchDTO>> getAllBoards() {
+        try {
+            return ResponseEntity.ok(teamService.getAllBoard());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
     }
 
     // 매치 읽기
     @GetMapping("/match/boardlist/{id}")
-    @ResponseBody // 자바 객체로 받으려고 500문제 해결
+    @ResponseBody
     public ResponseEntity<MatchPost> getBoardDetailByID(@PathVariable(value = "id") Integer id) {
+
         Optional<MatchPost> match = teamService.getBoardDetail(id);
-        return ResponseEntity.ok(match.get());
+        match.get().setUser(null);
+
+        if (match.isPresent()) {
+            return ResponseEntity.ok(match.get());
+        }
+
+        // 404 error
+        return ResponseEntity.notFound().build();
     }
 
 
@@ -51,8 +64,13 @@ public class BoardController {
     // 매치 수정
     @PutMapping("/match/addmatch/create/{id}")
     @ResponseBody
-    public ResponseEntity<MatchPost> updateBoard(@PathVariable(value = "id") Integer id, @RequestBody MatchDTO matchDTO) {
-        return teamService.updateBoard(id, matchDTO);
+    public ResponseEntity<Boolean> updateBoard(@PathVariable(value = "id") Integer id, @RequestBody MatchDTO matchDTO) {
+        boolean flag = teamService.updateBoard(id, matchDTO);
+        if (flag) {
+            return ResponseEntity.ok(true);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
 

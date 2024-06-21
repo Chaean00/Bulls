@@ -23,7 +23,7 @@ export const DeleteBoard = async (id, navigate) => {
             }
         })
         if (response.status === 200) {
-            ShowAlert("글을 삭제하였습니다.", "감사합니다.", "success", "/match/list", navigate);
+            ShowAlert("글을 삭제하였습니다.", "감사합니다.", "success", "/match/boardlist", navigate);
         }
     } catch (error) {
         if (error.response?.status === 401) {
@@ -70,8 +70,8 @@ export const DetailBoard = async (id, navigate, setBoard, setLoading, setBoardWr
             }
         });
         if (response.status === 200) {
-            console.log(response.data);
             setBoard(response.data);
+            console.log(response.data);
             setLoading(true);
             if (localStorage.getItem("nickname") === response.data.nickname) {
                 setBoardWriter(true);
@@ -110,10 +110,10 @@ export const UpdateBoard = async (id, navigate, inputs, handleCloseModal) => {
             }).then((result) => {
                 if (result.isConfirmed) {
                     handleCloseModal();
-                    navigate("/match/list")
+                    navigate("/match/boardlist")
                 } else if (result.dismiss === Swal.DismissReason.backdrop || result.dismiss === Swal.DismissReason.esc) {
                     handleCloseModal();
-                    navigate("/match/list")
+                    navigate("/match/boardlist")
                 }
             })
         }
@@ -165,7 +165,7 @@ export const MatchCreate = async (navigate, inputs) => {
             }
         })
         if (response.status === 200) {
-            ShowAlert("매칭 등록이 완료되었습니다.", "감사합니다.", "success", "/", navigate)
+            ShowAlert("매칭 등록이 완료되었습니다.", "감사합니다.", "success", "/match/boardlist", navigate)
         }
     } catch (error) {
         if (error.response?.status === 401) {

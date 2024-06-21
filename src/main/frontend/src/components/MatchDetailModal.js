@@ -86,6 +86,7 @@ export const MatchDetailModal = () => {
                         <Container className="board_container"><img src={MainText} style={{paddingRight: "100px"}} alt="MainText"/>{board.mainText}</Container>
                         <Container className="board_container"><img src={Nickname} style={{paddingRight: "100px"}} alt="Nickname"/>{board.nickname}</Container>
                         <Container className="board_container"><img src={MatchStatus} style={{paddingRight: "85px"}} alt="MatchStatus"/>{board.matchStatus}</Container>
+
                     </Modal.Body>
                     <Modal.Footer className="d-flex justify-content-between">
                         <div className="d-flex">

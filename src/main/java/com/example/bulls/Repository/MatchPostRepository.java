@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface MatchPostRepository extends JpaRepository<MatchPost, Integer> {
+//    List<MatchPost> findAllByOrderByMatchDateAsc();
 }

@@ -27,6 +27,5 @@ public class User {
     @Column(name = "introduce")
     private String introduce;
     @ManyToOne
-    @JoinColumn(name = "team_id")
     private Team team;
 }

@@ -12,12 +12,10 @@ import com.example.bulls.Repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.example.bulls.Config.CustomUserDetails;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -72,8 +70,6 @@ public class TeamService {
             String uid = userDetails.getUsername();
             Optional<User> optionalUser = userRepository.findByUid(uid);
 
-            log.info(String.valueOf(userDetails));
-
             Optional<Team> team = teamRepository.findByNickname(optionalUser.get().getNickname());
 
             if (team.isPresent()) {
@@ -118,7 +114,7 @@ public class TeamService {
     public List<MatchDTO> getAllBoard() {
         // 모든 데이터 매칭날짜 기준으로 오름차순 정렬
         List<MatchPost> matchPosts = matchPostRepository.findAll(Sort.by(Sort.Direction.ASC, "matchDate"));
-
+//        List<MatchPost> matchPosts = matchPostRepository.findAllByOrderByMatchDateAsc(); // 성능향상
         List<MatchDTO> dtos = new ArrayList<>();
         for (MatchPost matchPost : matchPosts) {
             // 변환 및 리스트에 추가하는 로직...
@@ -147,8 +143,7 @@ public class TeamService {
     }
 
     // 게시판 업데이트
-    public ResponseEntity<MatchPost> updateBoard(
-            Integer id, MatchDTO updateMatchDTO) {
+    public boolean updateBoard(Integer id, MatchDTO updateMatchDTO) {
         Optional<MatchPost> optionalMatchPost = matchPostRepository.findById(id);
 
         if (optionalMatchPost.isPresent()) {
@@ -168,27 +163,50 @@ public class TeamService {
             matchPost.setMatchContact(updateMatchDTO.getMatchContact());
             matchPost.setMainText(updateMatchDTO.getMainText());
 
-            MatchPost updatedMatchPost = matchPostRepository.save(matchPost);
+            matchPostRepository.save(matchPost);
 
-
-            return ResponseEntity.ok(updatedMatchPost);
+            return true;
         } else {
-            return ResponseEntity.notFound().build();
+            return false;
         }
     }
 
     // 게시판 저장
     public Boolean savedBoard(MatchDTO matchDTO) {
-        // 인증되어있는 객체에서 userName가져오기
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String uid = userDetails.getUsername();
-        Optional<User> optionalUser = userRepository.findByUid(uid);
+        try {
+            // 인증되어있는 객체에서 userName가져오기
+            CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String uid = userDetails.getUsername();
+            Optional<User> optionalUser = userRepository.findByUid(uid);
 
-        matchDTO.setNickname(optionalUser.get().getNickname());
-        MatchPost matchPost = matchDTO.toEntity();
+//        matchDTO.setNickname(optionalUser.get().getNickname());
+//        MatchPost matchPost = matchDTO.toEntity();
+//        matchPost.setUser(optionalUser.get());
+            MatchPost matchPost = new MatchPost();
+            matchPost.setId(matchDTO.getId());
+            matchPost.setMatchTime(matchDTO.getMatchTime());
+            matchPost.setMatchDate(matchDTO.getMatchDate());
+            matchPost.setPostTime(matchDTO.getPostTime());
+            matchPost.setPostDate(matchDTO.getPostDate());
+            matchPost.setPlace(matchDTO.getPlace());
+            matchPost.setMatchPlace(matchDTO.getMatchPlace());
+            matchPost.setMatchPrice(matchDTO.getMatchPrice());
+            matchPost.setLevel(matchDTO.getLevel());
+            matchPost.setCanParking(matchDTO.getCanParking());
+            matchPost.setMatchStatus(matchDTO.getMatchStatus());
+            matchPost.setNumPerson(matchDTO.getNumPerson());
+            matchPost.setMatchContact(matchDTO.getMatchContact());
+            matchPost.setMainText(matchDTO.getMainText());
+            matchPost.setNickname(optionalUser.get().getNickname());
+            matchPost.setUser(optionalUser.get());
 
-        matchPostRepository.save(matchPost);
-        return true;
+            matchPostRepository.save(matchPost);
+            return true;
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+            return false;
+        }
+
     }
 
     // 게시판 삭제

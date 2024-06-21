@@ -2,7 +2,6 @@ package com.example.bulls.DTO;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -11,4 +10,5 @@ import lombok.Setter;
 public class TokenDTO {
     private String nickname;
     private String access;
+    private String refresh;
 }

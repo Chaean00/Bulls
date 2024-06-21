@@ -1,5 +1,6 @@
 package com.example.bulls.Config;
 
+import lombok.Getter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,11 +13,14 @@ public class CustomUserDetails implements UserDetails {
 
     private final String uid;
     private final String password;
+    @Getter
+    private final String nickName;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(String uid, String password, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(String uid, String password, String nickName, Collection<? extends GrantedAuthority> authorities) {
         this.uid = uid;
         this.password = password;
+        this.nickName = nickName;
         this.authorities = authorities;
     }
 

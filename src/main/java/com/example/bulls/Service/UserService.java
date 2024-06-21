@@ -70,16 +70,16 @@ public class UserService {
         String nickname = optionalUser.get().getNickname();
 
         // 인증 객체 생성
-        UserDetails userDetails = new com.example.bulls.Config.CustomUserDetails(uId, pas, Arrays.asList(new SimpleGrantedAuthority(optionalUser.get().getRoles())));
+//        UserDetails userDetails = new com.example.bulls.Config.CustomUserDetails(uId, pas, Arrays.asList(new SimpleGrantedAuthority(optionalUser.get().getRoles())));
+        CustomUserDetails userDetails = new CustomUserDetails(uId, pas, nickname, Arrays.asList(new SimpleGrantedAuthority(optionalUser.get().getRoles())));
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
 
         // jwt access 발급
-        String accessToken = jwtProvider.createToken(authentication);
+        TokenDTO token = jwtProvider.createToken(authentication);
 
-        return TokenDTO.builder()
-                .access(accessToken)
-                .nickname(nickname)
-                .build();
+        token.setNickname(nickname);
+
+        return token;
     }
 
     // 로그인한 유저 정보 반환
