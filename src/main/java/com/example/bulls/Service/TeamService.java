@@ -118,19 +118,31 @@ public class TeamService {
         List<MatchDTO> dtos = new ArrayList<>();
         for (MatchPost matchPost : matchPosts) {
             // 변환 및 리스트에 추가하는 로직...
-            MatchDTO matchDTO = new MatchDTO();
+            MatchDTO matchDTO = MatchDTO.builder()
+                    .id(matchPost.getId())
+                    .matchDate(matchPost.getMatchDate())
+                    .matchTime(matchPost.getMatchTime())
+                    .place(matchPost.getPlace())
+                    .matchPlace(matchPost.getMatchPlace())
+                    .numPerson(matchPost.getNumPerson())
+                    .matchStatus(matchPost.getMatchStatus())
+                    .level(matchPost.getLevel())
+                    .canParking(matchPost.getCanParking())
+                    .matchPrice(matchPost.getMatchPrice())
+                    .nickname(matchPost.getNickname())
+                    .build();
 
-            matchDTO.setId(matchPost.getId());
-            matchDTO.setMatchDate(matchPost.getMatchDate());
-            matchDTO.setMatchTime(matchPost.getMatchTime());
-            matchDTO.setPlace(matchPost.getPlace());
-            matchDTO.setMatchPlace(matchPost.getMatchPlace());
-            matchDTO.setNumPerson(matchPost.getNumPerson());
-            matchDTO.setMatchStatus(matchPost.getMatchStatus());
-            matchDTO.setLevel(matchPost.getLevel());
-            matchDTO.setCanParking(matchPost.getCanParking());
-            matchDTO.setMatchPrice(matchPost.getMatchPrice());
-            matchDTO.setNickname(matchPost.getNickname());
+//            matchDTO.setId(matchPost.getId());
+//            matchDTO.setMatchDate(matchPost.getMatchDate());
+//            matchDTO.setMatchTime(matchPost.getMatchTime());
+//            matchDTO.setPlace(matchPost.getPlace());
+//            matchDTO.setMatchPlace(matchPost.getMatchPlace());
+//            matchDTO.setNumPerson(matchPost.getNumPerson());
+//            matchDTO.setMatchStatus(matchPost.getMatchStatus());
+//            matchDTO.setLevel(matchPost.getLevel());
+//            matchDTO.setCanParking(matchPost.getCanParking());
+//            matchDTO.setMatchPrice(matchPost.getMatchPrice());
+//            matchDTO.setNickname(matchPost.getNickname());
 
             dtos.add(matchDTO);
         }
@@ -138,8 +150,34 @@ public class TeamService {
     }
 
     // 게시판 세부 조회
-    public Optional<MatchPost> getBoardDetail(Integer id) {
-        return matchPostRepository.findById(id);
+    public Optional<MatchDTO> getBoardDetail(Integer id) {
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<MatchPost> match = matchPostRepository.findById(id);
+
+        MatchDTO matchDTO = MatchDTO.builder()
+                .id(match.get().getId())
+                .matchTime(match.get().getMatchTime())
+                .matchDate(match.get().getMatchDate())
+                .postTime(match.get().getPostTime())
+                .postDate(match.get().getPostDate())
+                .place(match.get().getPlace())
+                .matchPlace(match.get().getMatchPlace())
+                .matchPrice(match.get().getMatchPrice())
+                .level(match.get().getLevel())
+                .canParking(match.get().getCanParking())
+                .matchStatus(match.get().getMatchStatus())
+                .numPerson(match.get().getNumPerson())
+                .matchContact(match.get().getMatchContact())
+                .mainText(match.get().getMainText())
+                .nickname(match.get().getNickname())
+                .build();
+
+        boolean flag = customUserDetails.getNickName().equals(matchDTO.getNickname());
+
+        matchDTO.setCanEdit(flag);
+
+        return Optional.of(matchDTO);
     }
 
     // 게시판 업데이트

@@ -138,10 +138,10 @@ export const BoardUpdateModal = ({ showModal, handleCloseModal, board }) => {
                             <option value="11vs11">11vs11</option>
                             <option value="10vs10">10vs10</option>
                             <option value="9vs9">9vs9</option>
-                            <option value="11vs11">8vs8</option>
-                            <option value="10vs10">7vs7</option>
-                            <option value="9vs9">6vs6</option>
-                            <option value="9vs9">5vs5</option>
+                            <option value="8vs8">8vs8</option>
+                            <option value="7vs7">7vs7</option>
+                            <option value="6vs6">6vs6</option>
+                            <option value="5vs5">5vs5</option>
                         </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="ControlInput1">

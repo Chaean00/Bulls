@@ -23,8 +23,6 @@ export const SignIn = async (navigate, signinData, setSigninData, handleCloseMod
             },
         })
         if (response.status === 200) {
-
-            const data = await response.data;
             const token = response.headers.get("Authorization").split(' ')[1];
 
             console.log(token);
@@ -34,7 +32,6 @@ export const SignIn = async (navigate, signinData, setSigninData, handleCloseMod
 
             localStorage.setItem("token", encryption);
             localStorage.setItem("loggedIn", true);
-            localStorage.setItem("nickname", data);
             // id, pw 입력 칸 초기화
             setSigninData({
                 uid: "",

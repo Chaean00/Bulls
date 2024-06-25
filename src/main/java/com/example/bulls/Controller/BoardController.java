@@ -1,7 +1,6 @@
 package com.example.bulls.Controller;
 
 import com.example.bulls.DTO.MatchDTO;
-import com.example.bulls.Entity.MatchPost;
 import com.example.bulls.Service.TeamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +35,12 @@ public class BoardController {
     // 매치 읽기
     @GetMapping("/match/boardlist/{id}")
     @ResponseBody
-    public ResponseEntity<MatchPost> getBoardDetailByID(@PathVariable(value = "id") Integer id) {
+    public ResponseEntity<MatchDTO> getBoardDetailByID(@PathVariable(value = "id") Integer id) {
 
-        Optional<MatchPost> match = teamService.getBoardDetail(id);
-        match.get().setUser(null);
+        Optional<MatchDTO> matchDTO = teamService.getBoardDetail(id);
 
-        if (match.isPresent()) {
-            return ResponseEntity.ok(match.get());
+        if (matchDTO.isPresent()) {
+            return ResponseEntity.ok(matchDTO.get());
         }
 
         // 404 error

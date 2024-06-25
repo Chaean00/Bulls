@@ -37,17 +37,17 @@ public class UserController {
 
     // 로그인
     @PostMapping("/user/signin")
-    public ResponseEntity<String> signin(@Valid @RequestBody SigninDTO signinDTO) {
+    public ResponseEntity<Boolean> signin(@Valid @RequestBody SigninDTO signinDTO) {
         TokenDTO tokenDTO = userService.signin(signinDTO.getUid(), signinDTO.getPassword());
         if (tokenDTO != null) {
             // JWT Access 토큰을 헤더에 담아서 반환
             HttpHeaders headers = new HttpHeaders();
             headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + tokenDTO.getAccess());
             log.info("로그인 성공! - Controller");
-            return ResponseEntity.ok().headers(headers).body(tokenDTO.getNickname());
+            return ResponseEntity.ok().headers(headers).body(true);
         }
         // 로그인 실패
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 상태코드: 400
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false); // 상태코드: 400
     }
 
 

@@ -12,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.bulls.Config.CustomUserDetails;
@@ -49,6 +48,7 @@ public class UserService {
 
         // 이미 존재하는 유저인지? + 존재하는 닉네임인지?
         validateDuplicateMember(user);
+
         userRepository.save(user);
 
         return user;
@@ -66,20 +66,16 @@ public class UserService {
         String uId = optionalUser.get().getUid();
         String pas = optionalUser.get().getPassword();
 
-        // ToeknDTO용
+        // 인증 객체 생성용
         String nickname = optionalUser.get().getNickname();
 
         // 인증 객체 생성
-//        UserDetails userDetails = new com.example.bulls.Config.CustomUserDetails(uId, pas, Arrays.asList(new SimpleGrantedAuthority(optionalUser.get().getRoles())));
-        CustomUserDetails userDetails = new CustomUserDetails(uId, pas, nickname, Arrays.asList(new SimpleGrantedAuthority(optionalUser.get().getRoles())));
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-
+        CustomUserDetails customUserDetails = new CustomUserDetails(uId, pas, nickname, Arrays.asList(new SimpleGrantedAuthority(optionalUser.get().getRoles())));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(customUserDetails, customUserDetails.getPassword(), customUserDetails.getAuthorities());
+        // SecurityContextHolder에 인증 객체 저장
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         // jwt access 발급
-        TokenDTO token = jwtProvider.createToken(authentication);
-
-        token.setNickname(nickname);
-
-        return token;
+        return jwtProvider.createToken(authentication);
     }
 
     // 로그인한 유저 정보 반환
@@ -87,6 +83,7 @@ public class UserService {
         try {
             CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String uid = userDetails.getUsername();
+
             User user = userRepository.findByUid(uid).get();
 
             return UserDTO.builder()

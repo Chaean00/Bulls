@@ -47,7 +47,7 @@ export const MatchingFinished = async (id, navigate) => {
             }
         })
         if (response.status === 200) {
-            ShowAlert("매칭상태를 변경했습니다.", "감사합니다.", "success", "/match/list", navigate);
+            ShowAlert("매칭상태를 변경했습니다.", "감사합니다.", "success", "/match/boardlist", navigate);
         }
     } catch (error) {
         if (error.response?.status === 401) {
@@ -71,11 +71,12 @@ export const DetailBoard = async (id, navigate, setBoard, setLoading, setBoardWr
         });
         if (response.status === 200) {
             setBoard(response.data);
-            console.log(response.data);
             setLoading(true);
-            if (localStorage.getItem("nickname") === response.data.nickname) {
+            // 수정할 수 있는가?
+            if (response.data.canEdit) {
                 setBoardWriter(true);
             }
+            // 매칭이 마감되었는가?
             if (response.data.matchStatus === "매칭 마감") {
                 setIsFinished(true);
             }
