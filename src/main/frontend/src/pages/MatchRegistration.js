@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {ShowAlert} from "../components/ShowAlert";
+import {ShowAlert} from "../utils/ShowAlert";
 import {LoadingSpinner} from "../components/LoadingSpinner";
 import {Button, Container, Form} from "react-bootstrap";
 import "../styles/MatchRegistration.scss"
 import Swal from "sweetalert2";
-import {RemoveData} from "../components/RemoveData";
+import {RemoveData} from "../utils/RemoveData";
 import {MatchCreate} from "../api/MatchApi";
 
 export const MatchRegistration = () => {

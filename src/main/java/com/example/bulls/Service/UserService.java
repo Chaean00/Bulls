@@ -18,6 +18,7 @@ import com.example.bulls.Config.CustomUserDetails;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -26,11 +27,14 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtProvider jwtProvider;
 
+    private final RedisService redisService;
+
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JwtProvider jwtProvider) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JwtProvider jwtProvider, RedisService redisService) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.jwtProvider = jwtProvider;
+        this.redisService = redisService;
     }
 
     // 회원가입
@@ -62,20 +66,19 @@ public class UserService {
         if (!bCryptPasswordEncoder.matches(password, optionalUser.get().getPassword())) {
             throw new SigninException("비밀번호가 일치하지 않습니다..");
         }
-        // 인증객체 생성용
-        String uId = optionalUser.get().getUid();
-        String pas = optionalUser.get().getPassword();
 
-        // 인증 객체 생성용
-        String nickname = optionalUser.get().getNickname();
+        // 인증 객체 생성 - id, password, nickname, roles
+        CustomUserDetails customUserDetails = new CustomUserDetails(optionalUser.get().getUid(), optionalUser.get().getPassword(), optionalUser.get().getNickname(), Arrays.asList(new SimpleGrantedAuthority(optionalUser.get().getRoles())));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(customUserDetails, "", customUserDetails.getAuthorities());
 
-        // 인증 객체 생성
-        CustomUserDetails customUserDetails = new CustomUserDetails(uId, pas, nickname, Arrays.asList(new SimpleGrantedAuthority(optionalUser.get().getRoles())));
-        Authentication authentication = new UsernamePasswordAuthenticationToken(customUserDetails, customUserDetails.getPassword(), customUserDetails.getAuthorities());
-        // SecurityContextHolder에 인증 객체 저장
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // 인증 객체를 기반으로 JWT 생성
+        TokenDTO tokenDTO = jwtProvider.createToken(authentication);
+
+        // Refresh Token Redis에 저장
+        redisService.save(optionalUser.get().getUid(), tokenDTO.getRefresh(), 60, TimeUnit.MINUTES);
+
         // jwt access 발급
-        return jwtProvider.createToken(authentication);
+        return tokenDTO;
     }
 
     // 로그인한 유저 정보 반환

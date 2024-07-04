@@ -1,7 +1,7 @@
 import {Container} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {ShowAlert} from "./ShowAlert";
+import {ShowAlert} from "../utils/ShowAlert";
 import axios from "axios";
 import CryptoJs from "crypto-js";
 import {LoadingSpinner} from "./LoadingSpinner";

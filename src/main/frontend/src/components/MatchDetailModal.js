@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {ShowAlert} from "./ShowAlert";
+import {ShowAlert} from "../utils/ShowAlert";
 import {useEffect, useState} from "react";
 import {Button, Container, Modal} from "react-bootstrap";
 import {LoadingSpinner} from "./LoadingSpinner";
@@ -14,7 +14,7 @@ import CanParking from "../images/detail/canParking.png"
 import MatchStatus from "../images/detail/matchStatus.png"
 import MainText from "../images/detail/mainText.png"
 import Nickname from "../images/detail/nickname.png"
-import {RemoveData} from "./RemoveData";
+import {RemoveData} from "../utils/RemoveData";
 import {BoardUpdateModal} from "./BoardUpdateModal";
 import Swal from "sweetalert2";
 import {DeleteBoard, DetailBoard, MatchingFinished} from "../api/MatchApi";

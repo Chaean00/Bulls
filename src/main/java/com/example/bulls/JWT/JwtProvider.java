@@ -1,5 +1,6 @@
 package com.example.bulls.JWT;
 
+import com.example.bulls.Config.CustomUserDetails;
 import com.example.bulls.Config.CustomUserDetailsService;
 import com.example.bulls.DTO.TokenDTO;
 import io.jsonwebtoken.*;
@@ -11,8 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -34,7 +33,6 @@ public class JwtProvider {
     @Value("${jwt.expiration_refresh}")
     private long expiration_refresh;
 
-//    private final UserDetailsService userDetailsService;
     private final CustomUserDetailsService customUserDetailsService;
 
 
@@ -61,6 +59,7 @@ public class JwtProvider {
                 .compact();
 
         String refreshToken = Jwts.builder()
+                .setSubject(authentication.getName())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration_refresh))
 //                .signWith(SignatureAlgorithm.HS256, secretKey) // 지원 중단
                 .signWith(getKey(secretKey), SignatureAlgorithm.HS256)
@@ -74,7 +73,6 @@ public class JwtProvider {
 
     public String validateToken(String token) {
         try {
-//            Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
             Jwts.parserBuilder().setSigningKey(getKey(secretKey)).build().parseClaimsJws(token);
             return "ACCESS";
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
@@ -93,13 +91,11 @@ public class JwtProvider {
     // 토큰에서 아이디 가져오기
     public String getUid(String token) {
         return Jwts.parserBuilder().setSigningKey(getKey(secretKey)).build().parseClaimsJws(token).getBody().getSubject();
-//        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
     }
 
     // 토큰에서 인증 정보 추출
     public Authentication getAuthentication(String token) {
-//        UserDetails userDetails = userDetailsService.loadUserByUsername(getUid(token));
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(getUid(token));
+        CustomUserDetails userDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(getUid(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

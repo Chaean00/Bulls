@@ -3,6 +3,8 @@ package com.example.bulls.Controller;
 import com.example.bulls.DTO.*;
 import com.example.bulls.Entity.User;
 import com.example.bulls.Service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserController {
     private final UserService userService;
 
-
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
@@ -37,13 +38,20 @@ public class UserController {
 
     // 로그인
     @PostMapping("/user/signin")
-    public ResponseEntity<Boolean> signin(@Valid @RequestBody SigninDTO signinDTO) {
+    public ResponseEntity<Boolean> signin(@Valid @RequestBody SigninDTO signinDTO, HttpServletResponse response) {
         TokenDTO tokenDTO = userService.signin(signinDTO.getUid(), signinDTO.getPassword());
         if (tokenDTO != null) {
             // JWT Access 토큰을 헤더에 담아서 반환
             HttpHeaders headers = new HttpHeaders();
             headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + tokenDTO.getAccess());
             log.info("로그인 성공! - Controller");
+
+            Cookie cookie = new Cookie("refresh_token", tokenDTO.getRefresh());
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(3600 * 24 * 7);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+
             return ResponseEntity.ok().headers(headers).body(true);
         }
         // 로그인 실패

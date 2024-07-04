@@ -22,15 +22,17 @@ public class JwtFilter extends OncePerRequestFilter { // OncePerRequestFilter : 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 헤더에서 토큰 추출
-        String AccessToken = resolveToken(request);
+        String access_token = resolveToken(request);
+
 
         // token의 유효성 검사
-        if (AccessToken != null && "ACCESS".equals(jwtProvider.validateToken(AccessToken))) {
-            Authentication authentication = jwtProvider.getAuthentication(AccessToken);
+        if (access_token != null && "ACCESS".equals(jwtProvider.validateToken(access_token))) {
+            Authentication authentication = jwtProvider.getAuthentication(access_token);
             // 권한부여
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        } else if (AccessToken != null && "EXPIRED".equals(jwtProvider.validateToken(AccessToken))) { // access token 만료
+        } else if (access_token != null && "EXPIRED".equals(jwtProvider.validateToken(access_token))) { // access token 만료
+
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 Error
             response.getWriter().write("Access Token이 만료되었습니다.");
 

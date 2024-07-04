@@ -7,7 +7,7 @@ import SignUpModal from "./SignUpModal";
 import { SignInModal } from "./SignInModal";
 import Menu from "../images/menu.svg"
 import {useNavigate} from "react-router-dom";
-import {RemoveData} from "./RemoveData";
+import {RemoveData} from "../utils/RemoveData";
 
 export const Header = () => {
     const [showModal, setShowModal] = useState(false);

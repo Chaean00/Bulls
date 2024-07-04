@@ -39,6 +39,7 @@ public class SpringConfig implements WebMvcConfigurer {
                         .requestMatchers(new AntPathRequestMatcher("/user/signin")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher(("/inquiry/new"))).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/reissue/accesstoken")).permitAll()
                         .anyRequest().authenticated()
                 )
                 // 필터 추가 (JWT 검증)

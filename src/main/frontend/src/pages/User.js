@@ -4,7 +4,7 @@ import Person from "../images/person-circle.svg"
 import Team from "../images/team_icon.png"
 import "../styles/User.scss"
 import {useNavigate} from "react-router-dom";
-import {ShowAlert} from "../components/ShowAlert";
+import {ShowAlert} from "../utils/ShowAlert";
 import Swal from "sweetalert2";
 import {LoadingSpinner} from "../components/LoadingSpinner";
 import {GetUser, UpdateIntroduce} from "../api/UserApi";
@@ -32,7 +32,7 @@ export const User = () => {
 
     // 유저 소개 업데이트
     const handleUpdate = async () => {
-        await UpdateIntroduce(user, navigate);
+        await UpdateIntroduce(user);
     }
 
     // 팀 삭제
@@ -47,7 +47,7 @@ export const User = () => {
             cancelButtonText: "취소"
         }).then(async (result) => {
             if (result.isConfirmed) {
-                await DeleteTeam(navigate);
+                await DeleteTeam();
             } else if (result.isDismissed) {
                 navigate("/user/info");
             } else if (result.dismiss === Swal.DismissReason.backdrop || result.dismiss === Swal.DismissReason.esc) {

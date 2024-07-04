@@ -31,9 +31,4 @@ public class MatchDTO {
     private String nickname;
     private boolean canEdit;
 
-
-//    public MatchPost toEntity() { // id 값은 자동으로 증가하려고 null 로 주는 방법도 있음.
-//        return new MatchPost(id,matchTime,matchDate,postTime,postDate,place,matchPlace,matchPrice,
-//                level,canParking,matchStatus,numPerson,matchContact,mainText, nickname);
-//    }
 }

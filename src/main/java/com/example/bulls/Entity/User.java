@@ -12,7 +12,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-increment
     private Long id;
-    @Column(name = "uid")
+    @Column(name = "uid", unique = true)
     private String uid;
     @Column(name = "password")
     private String password;

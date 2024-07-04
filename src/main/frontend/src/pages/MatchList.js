@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
-import {ShowAlert} from "../components/ShowAlert";
+import {ShowAlert} from "../utils/ShowAlert";
 import {Link, useNavigate} from "react-router-dom";
 import {LoadingSpinner} from "../components/LoadingSpinner";
 import {Badge, Container, FormCheck, ListGroup} from "react-bootstrap";
 import "../styles/MatchList.scss"
-import {RemoveData} from "../components/RemoveData";
+import {RemoveData} from "../utils/RemoveData";
 import {GetMatchList} from "../api/MatchApi";
 
 export const MatchList = () => {

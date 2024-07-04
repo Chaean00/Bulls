@@ -132,18 +132,6 @@ public class TeamService {
                     .nickname(matchPost.getNickname())
                     .build();
 
-//            matchDTO.setId(matchPost.getId());
-//            matchDTO.setMatchDate(matchPost.getMatchDate());
-//            matchDTO.setMatchTime(matchPost.getMatchTime());
-//            matchDTO.setPlace(matchPost.getPlace());
-//            matchDTO.setMatchPlace(matchPost.getMatchPlace());
-//            matchDTO.setNumPerson(matchPost.getNumPerson());
-//            matchDTO.setMatchStatus(matchPost.getMatchStatus());
-//            matchDTO.setLevel(matchPost.getLevel());
-//            matchDTO.setCanParking(matchPost.getCanParking());
-//            matchDTO.setMatchPrice(matchPost.getMatchPrice());
-//            matchDTO.setNickname(matchPost.getNickname());
-
             dtos.add(matchDTO);
         }
         return dtos;
