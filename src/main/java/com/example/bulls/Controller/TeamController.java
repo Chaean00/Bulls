@@ -25,10 +25,7 @@ public class TeamController {
 
     @PostMapping("/team/new")
     public ResponseEntity<String> teamRegister(@Valid @RequestBody TeamDTO teamDTO) {
-        if (teamService.teamRegister(teamDTO)) {
-            return ResponseEntity.ok("팀 등록이 완료되었습니다.");
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("팀 등록에 실패하였습니다.");
+        return ResponseEntity.ok("팀 등록이 완료되었습니다.");
     }
 
     // 로그인한 유저의 정보를 반환
@@ -42,9 +39,15 @@ public class TeamController {
     }
 
     @GetMapping("/team/delete")
-    public ResponseEntity<String> teamDelete() {
-        String success = teamService.teamDelete();
+    public ResponseEntity<Boolean> teamDelete() {
+        boolean success = teamService.teamDelete();
 
-        return ResponseEntity.ok(success);
+        if (success) {
+            return ResponseEntity.ok(success);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
+
+
     }
 }

@@ -21,6 +21,7 @@ public class BoardController {
     @Autowired
     private TeamService teamService;
 
+    // 매치 전체 읽기
     @GetMapping("/match/boardlist")
     @ResponseBody
     public ResponseEntity<List<MatchDTO>> getAllBoards() {
@@ -32,7 +33,7 @@ public class BoardController {
 
     }
 
-    // 매치 읽기
+    // 매치 세부사항 읽기
     @GetMapping("/match/boardlist/{id}")
     @ResponseBody
     public ResponseEntity<MatchDTO> getBoardDetailByID(@PathVariable(value = "id") Integer id) {
@@ -86,6 +87,6 @@ public class BoardController {
         if(teamService.matchFinished(id)) {
             return ResponseEntity.ok("변경 성공.");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("변경 실패.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("변경 실패.");
     }
 }

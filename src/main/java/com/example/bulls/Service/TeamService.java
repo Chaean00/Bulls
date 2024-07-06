@@ -92,7 +92,7 @@ public class TeamService {
 
     // 본인이 속한 팀 삭제
     @Transactional
-    public String teamDelete() {
+    public boolean teamDelete() {
         try {
             CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String uid = userDetails.getUsername();
@@ -103,10 +103,10 @@ public class TeamService {
             Optional<Team> team = teamRepository.findByNickname(optionalUser.get().getNickname());
             teamRepository.delete(team.get());
 
-            return "삭제 완료";
+            return true;
         } catch (SecurityException e) {
             log.info(e.getMessage());
-            return null;
+            return false;
         }
     }
 
@@ -205,9 +205,6 @@ public class TeamService {
             String uid = userDetails.getUsername();
             Optional<User> optionalUser = userRepository.findByUid(uid);
 
-//        matchDTO.setNickname(optionalUser.get().getNickname());
-//        MatchPost matchPost = matchDTO.toEntity();
-//        matchPost.setUser(optionalUser.get());
             MatchPost matchPost = new MatchPost();
             matchPost.setId(matchDTO.getId());
             matchPost.setMatchTime(matchDTO.getMatchTime());
@@ -237,8 +234,7 @@ public class TeamService {
 
     // 게시판 삭제
     public void deleteBoard(Integer id) {
-        matchPostRepository.findById(id).orElseThrow(()
-                -> new IllegalArgumentException("해당 게시물이 없습니다." + id));
+        matchPostRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 없습니다." + id));
         matchPostRepository.deleteById(id);
     }
 

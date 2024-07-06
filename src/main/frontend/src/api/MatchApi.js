@@ -25,8 +25,11 @@ export const MatchingFinished = async (id, navigate) => {
             ShowAlert("매칭상태를 변경했습니다.", "감사합니다.", "success", "/match/boardlist", navigate);
         }
     } catch (error) {
+        if (error.response?.status === 404) {
+            ShowAlert("게시글을 찾을 수 없습니다.", "다시 시도해주세요", "error", "/match/boardlist", navigate);
+        }
         if (error.response?.status === 403) {
-            ShowAlert("403", "403", "error", "/", navigate)
+            ShowAlert("403", "403", "error", "/", navigate);
         }
         console.log(error);
     }
@@ -49,6 +52,9 @@ export const DetailBoard = async (id, navigate, setBoard, setLoading, setBoardWr
             }
         }
     } catch (error) {
+        if (error.response?.status === 404) {
+            ShowAlert("게시글을 찾을 수 없습니다.", "다시 시도해주세요", "error", "/match/boardlist", navigate);
+        }
         if (error.response?.status === 403) {
             ShowAlert("403", "403", "error", "/", navigate);
         } else {
@@ -78,6 +84,9 @@ export const UpdateBoard = async (id, navigate, inputs, handleCloseModal) => {
             })
         }
     } catch (error) {
+        if (error.response?.status === 404) {
+            ShowAlert("게시글을 찾을 수 없습니다.", "다시 시도해주세요", "error", "/match/boardlist", navigate);
+        }
         if (error.response?.status === 403) {
             ShowAlert("403", "403", "error", "/", navigate);
         } else {
@@ -95,10 +104,12 @@ export const GetMatchList = async (navigate, setMatchList, setLoading) => {
             setLoading(true);
         }
     } catch (error) {
+        if (error.response?.status === 500) {
+            ShowAlert("서버에 문제가 있습니다.", "잠시 후에 다시 시도해주세요", "error", "/", navigate);
+        }
         if (error.response?.status === 403) {
             ShowAlert("403", "403", "error", "/", navigate);
-        } else {
-            ShowAlert("알 수 없는 오류.", "죄송합니다.", "error", "/", navigate);
+            console.log(error.response)
         }
     }
 }

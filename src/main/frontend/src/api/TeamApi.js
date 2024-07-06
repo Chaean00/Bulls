@@ -55,6 +55,9 @@ export const DeleteTeam = async () => {
             })
         }
     } catch (error) {
+        if (error.response?.status === 404) {
+            Swal.fire("팀을 찾을 수 없습니다.", "다시 시도해주세요.", "error");
+        }
         if (error.response?.status === 403) {
             Swal.fire("403", "403", "error");
             console.log(error.response)

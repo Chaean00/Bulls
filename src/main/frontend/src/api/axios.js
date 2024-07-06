@@ -34,9 +34,25 @@ instance.interceptors.response.use(
         const originalRequest = error.config;
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
-            const token = await reissue(originalRequest.navigate);
+            const token = await reissue();
             originalRequest.headers.Authorization = `Bearer ${token}`;
             return instance(originalRequest);
+        }
+        if (error.response?.status === 400) {
+            console.log(error)
+            console.log(400)
+        }
+        if (error.response?.status === 403) {
+            console.log(error)
+            console.log(403)
+        }
+        if (error.response?.status === 409) {
+            console.log(error)
+            console.log(409)
+        }
+        if (error.response?.status === 500) {
+            console.log(error)
+            console.log(500)
         }
         return Promise.reject(error);
     }

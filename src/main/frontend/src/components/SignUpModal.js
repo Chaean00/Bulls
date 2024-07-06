@@ -40,16 +40,8 @@ const SignUpModal = ({ showModal, handleCloseModal }) => {
             setShowAlert(true) // 오류메세지 보여주기
             return;
         }
-        await Signup(navigate, user, handleCloseModal)
 
-        setUser({
-            userId: "",
-            password: "",
-            userName: "",
-            email: "",
-            nickName: "",
-        });
-        setConfirmPassword("");
+        await Signup(navigate, user, handleCloseModal, setUser, setConfirmPassword)
     };
 
     const handleCloseBtn = () => {
