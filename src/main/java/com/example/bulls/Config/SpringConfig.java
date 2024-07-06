@@ -37,6 +37,7 @@ public class SpringConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(new AntPathRequestMatcher("/user/new")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/user/signin")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/user/signout")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher(("/inquiry/new"))).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/reissue/accesstoken")).permitAll()

@@ -54,7 +54,7 @@ public class TokenController {
     @PostMapping("/reissue/accesstoken")
     public ResponseEntity<Boolean> reissueRefreshToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        String refresh_token = "";
+        String refresh_token = null;
         for (Cookie cookie : cookies) {
             if ("refresh_token".equals(cookie.getName())) {
                 refresh_token = cookie.getValue();
@@ -80,6 +80,6 @@ public class TokenController {
             }
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false); // 상태코드: 400
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false); // 상태코드: 401
     }
 }

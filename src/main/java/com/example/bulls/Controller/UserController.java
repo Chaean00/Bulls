@@ -4,6 +4,7 @@ import com.example.bulls.DTO.*;
 import com.example.bulls.Entity.User;
 import com.example.bulls.Service.UserService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,8 @@ public class UserController {
     @PostMapping("/user/signin")
     public ResponseEntity<Boolean> signin(@Valid @RequestBody SigninDTO signinDTO, HttpServletResponse response) {
         TokenDTO tokenDTO = userService.signin(signinDTO.getUid(), signinDTO.getPassword());
+        log.info(tokenDTO.getAccess());
+        log.info(tokenDTO.getRefresh());
         if (tokenDTO != null) {
             // JWT Access 토큰을 헤더에 담아서 반환
             HttpHeaders headers = new HttpHeaders();
@@ -56,6 +59,14 @@ public class UserController {
         }
         // 로그인 실패
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false); // 상태코드: 400
+    }
+
+    // 로그아웃
+    @PostMapping("/user/signout")
+    public ResponseEntity<Boolean> signout(HttpServletRequest request, HttpServletResponse response) {
+        userService.signOut(request, response);
+
+        return ResponseEntity.ok(true);
     }
 
 
@@ -77,7 +88,7 @@ public class UserController {
     public ResponseEntity<String> updateIntroduce(@Valid @RequestBody UserDTO userDTO) {
         String introduce = userService.updateIntroduce(userDTO);
         if (introduce == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 상태코드: 200
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 상태코드: 400
         }
 
         return ResponseEntity.ok(introduce);

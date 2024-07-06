@@ -7,7 +7,7 @@ import SignUpModal from "./SignUpModal";
 import { SignInModal } from "./SignInModal";
 import Menu from "../images/menu.svg"
 import {useNavigate} from "react-router-dom";
-import {RemoveData} from "../utils/RemoveData";
+import {SignOut} from "../api/UserApi";
 
 export const Header = () => {
     const [showModal, setShowModal] = useState(false);
@@ -35,8 +35,9 @@ export const Header = () => {
         setShowModal(false);
     };
     const logout = () => {
-        RemoveData();
-        window.location.href = "/";
+        SignOut();
+        // RemoveData();
+        // window.location.href = "/";
     }
 
     return (

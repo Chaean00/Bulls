@@ -24,10 +24,10 @@ public class JwtFilter extends OncePerRequestFilter { // OncePerRequestFilter : 
         // 헤더에서 토큰 추출
         String access_token = resolveToken(request);
 
-
         // token의 유효성 검사
         if (access_token != null && "ACCESS".equals(jwtProvider.validateToken(access_token))) {
             Authentication authentication = jwtProvider.getAuthentication(access_token);
+
             // 권한부여
             SecurityContextHolder.getContext().setAuthentication(authentication);
 

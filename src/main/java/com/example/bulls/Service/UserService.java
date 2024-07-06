@@ -6,6 +6,9 @@ import com.example.bulls.Entity.User;
 import com.example.bulls.Exception.SigninException;
 import com.example.bulls.JWT.JwtProvider;
 import com.example.bulls.Repository.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -71,14 +74,36 @@ public class UserService {
         CustomUserDetails customUserDetails = new CustomUserDetails(optionalUser.get().getUid(), optionalUser.get().getPassword(), optionalUser.get().getNickname(), Arrays.asList(new SimpleGrantedAuthority(optionalUser.get().getRoles())));
         Authentication authentication = new UsernamePasswordAuthenticationToken(customUserDetails, "", customUserDetails.getAuthorities());
 
+        // 인증 정보 설정
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         // 인증 객체를 기반으로 JWT 생성
         TokenDTO tokenDTO = jwtProvider.createToken(authentication);
 
         // Refresh Token Redis에 저장
-        redisService.save(optionalUser.get().getUid(), tokenDTO.getRefresh(), 60, TimeUnit.MINUTES);
-
+//        redisService.save(optionalUser.get().getUid(), tokenDTO.getRefresh(), 3, TimeUnit.DAYS);
+        redisService.save(optionalUser.get().getUid(), tokenDTO.getRefresh(), 60, TimeUnit.SECONDS);
         // jwt access 발급
         return tokenDTO;
+    }
+
+    // 로그아웃
+    public void signOut(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        String refresh_token = null;
+        for (Cookie cookie : cookies) {
+            if ("refresh_token".equals(cookie.getName())) {
+                refresh_token = cookie.getValue();
+            }
+        }
+        String uid = jwtProvider.getUid(refresh_token);
+        redisService.delete(uid);
+
+        // 쿠키 삭제
+        Cookie cookie = new Cookie("refresh_token", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 
     // 로그인한 유저 정보 반환
@@ -123,12 +148,12 @@ public class UserService {
         // 이미 존재하는 회원?
         userRepository.findByUid(user.getUid()).
                 ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다");
+                    throw new IllegalStateException("이미 존재하는 회원입니다"); // 403에러?
                 });
         // 이미 존재하는 닉네임?
         userRepository.findByNickname(user.getNickname()).
                 ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 닉네임입니다.");
+                    throw new IllegalStateException("이미 존재하는 닉네임입니다."); // 403에러?
                 });
     }
 }
