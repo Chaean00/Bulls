@@ -1,13 +1,25 @@
-# React / Spring Boot를 이용한 축구 매칭 웹페이지
+# 축구 매칭 웹페이지
 
+## 사용 기술
+- React 18.2.0
+- Spring Boot 3.1.5
+- JDK 17
+- Mysql 8.0.33
+  
 ## 개발 기간
 
+#### 개발
 2023.09 ~ 2023.12
 
 #### 1차 리팩토링
 2024.06 ~ 2024.07
 
-## 보고서 (Notion)
+# 주제
+아마추어 팀이 상대 팀을 구할 때 네이버 카페, 특정 커뮤니티 혹은 지인을 통해서 매칭을 잡는 비효율적인 방식을 개선하기 위해
+게시판 형식의 웹사이트를 제작했습니다
 
-https://bullsfootball.notion.site/Bulls-8cd219fae97a4405b22c7564e3903b74?pvs=4
+
+
+# 구현 영상
+[![Bulls](http://img.youtube.com/vi/YLSE09qp7FQ/0.jpg)](https://youtu.be/YLSE09qp7FQ?t=0s) 
 
